@@ -16,13 +16,13 @@ public class RecursionMethods {
 
     /**
      * 
-     * @param num - any integer number
+     * @param num    - any integer number
      * @param degree - any positive number
      * @return num ^ degree
-     * limitations:
-     * 1. no cycles allowed
-     * 2. arithmetic operators + ; - are allowed only
-     * 3. bitwise operators like >>, <<, &&, etc disallowe
+     *         limitations:
+     *         1. no cycles allowed
+     *         2. arithmetic operators + ; - are allowed only
+     *         3. bitwise operators like >>, <<, &&, etc disallowe
      */
     public static long pow(int num, int degree) {
         if (degree < 0) {
@@ -34,8 +34,6 @@ public class RecursionMethods {
 
         if (degree == 0) {
             sum = 1;
-        } else if (degree == 1) {
-            sum = num;
         } else {
             sum = powDegree(num, count, degree - 1);
         }
@@ -52,15 +50,12 @@ public class RecursionMethods {
     }
 
     private static long powDegree(int num, int count, int degree) {
-        int sum = 0;
         long res = 0;
 
-        sum = powSum(num, count);
-
-        if (degree == 1) {
-            res = sum;
+        if (degree == 0) {
+            res = num;
         } else {
-            res = powDegree(sum, count, degree - 1);
+            res = powDegree(powSum(num, count), count, degree - 1);
         }
 
         return res;
@@ -70,7 +65,7 @@ public class RecursionMethods {
         return count == 0 ? 0 : num + powSum(num, count - 1);
     }
 
-    public static int sum(int[] array) {      
+    public static int sum(int[] array) {
         return sum(array, array.length);
     }
 
@@ -82,16 +77,16 @@ public class RecursionMethods {
      * 
      * @param x
      * @return x ^ 2
-     * limitations:
-     * 1. no cycles
-     * 2. arithmetic operators only +, - 
-     * 3. no bitwise operators
-     * 4. no standart and additional methods are allowed
-     * 5. no additional fielsd ot the class RecursionMethods are allowed
+     *         limitations:
+     *         1. no cycles
+     *         2. arithmetic operators only +, -
+     *         3. no bitwise operators
+     *         4. no standart and additional methods are allowed
+     *         5. no additional fielsd ot the class RecursionMethods are allowed
      */
     public static int square(int x) {
         x = x < 0 ? -x : x;
-        return powSum(x, x);
+        return x <= 1 ? x : square(x - 1) + x + x - 1;
     }
 
     /**
@@ -99,34 +94,45 @@ public class RecursionMethods {
      * @param string
      * @param subString
      * @return true if subString is actually substring of the given string
-     * limitations:
-     * 1. no cycles
-     * 2. the allowed methods of class String are
-     *      2.1. charAt(int index)
-     *      2.2. length()
-     *      2.3. subString(int beginIndex)
+     *         limitations:
+     *         1. no cycles
+     *         2. the allowed methods of class String are
+     *         2.1. charAt(int index)
+     *         2.2. length()
+     *         2.3. subString(int beginIndex)
      */
     public static boolean isSubstring(String string, String subString) {
-        if (string.length() == 0 || subString.length() == 0) {
-            return false;
-        }
-
-        int index = 0;
-        int subIndex = 0;
-        return stringIncludeSubString(string, subString, index, subIndex);
-    }
-
-    private static boolean stringIncludeSubString(String string, String subString, int index, int subIndex) {
-        boolean res = false;
-        if (subIndex == subString.length() - 1) {
-            res = true;
-        } else if (index == string.length() - 1) {
+        boolean res;
+        if (subString.length() == 0) {
             res = false;
-        } else if (string.charAt(index) == subString.charAt(subIndex)) {
-            res = stringIncludeSubString(string, subString, index + 1, subIndex + 1);
         } else {
-            res = stringIncludeSubString(string, subString, index + 1, 0);
+            res = stringIncludeSubString(string, subString);
         }
         return res;
     }
+
+    private static boolean stringIncludeSubString(String string, String subString) {
+        boolean res = false;
+        if (subString.length() > string.length()) {
+             res = false;
+        } else if (isEqual(string, subString, 0)) {
+            res = true;
+        } else {
+            res = stringIncludeSubString(string.substring(1), subString);
+        }
+        return res;
+    }
+
+    private static boolean isEqual(String string, String subString, int index) {
+        boolean res;
+        if (index == subString.length()) {
+            res = true;
+        } else if (string.charAt(index) != subString.charAt(index)) {
+            res = false;
+        } else {
+            res = isEqual(string, subString, index + 1);
+        }
+        return res;
+    }
+
 }

@@ -39,6 +39,7 @@ public class RecursionMethodsTest {
     void squareTest() {
         assertEquals(1, square(1));
         assertEquals(4, square(2));
+        assertEquals(9, square(3));
         assertEquals(100, square(10));
         assertEquals(100, square(-10));
         assertEquals(10000, square(100));
